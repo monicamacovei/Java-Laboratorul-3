@@ -15,67 +15,38 @@ public class Greedy implements Algorithm {
         this.knapsack = knapsack;
         this.items = items;
     }
-    public float knapsack(int n, float[] weight, float[] profit, float capacity) {
-        float x[], tp = 0;
-        x= new float [20];
-        int i;
-        int j;
-        float u;
-        u = capacity;
-
-        for (i = 0; i < n; i++)
-            x[i] = (float) 0.0;
-
-        for (i = 0; i < n; i++) {
-            if (weight[i] > u)
-                break;
-            else {
-                x[i] = (float) 1.0;
-                tp = tp + profit[i];
-                u = u - weight[i];
-            }
-        }
-
-        if (i < n)
-            x[i] = u / weight[i];
-
-        tp = tp + (x[i] * profit[i]);
-
-        return tp;
-
-    }
 
     public float getValue() {
-        float weight[], profit[];
-        float ratio[], temp, finalValue = (float) 0.0, Capacity, Percentage[];
+        float Weight[], Profit[];
+        float Ratio[], temp, finalValue = (float) 0.0, Capacity, Percentage[];
 
         int itemsNumber,i;
         Capacity = knapsack.getCapacity();
         itemsNumber = items.size();
-        weight = new float[itemsNumber];
-        profit = new float[itemsNumber];
-        ratio = new float[itemsNumber];
+        Weight = new float[itemsNumber];
+        Profit = new float[itemsNumber];
+        Ratio = new float[itemsNumber];
         Percentage = new float[itemsNumber];
         for (i = 0; i < itemsNumber; i++) {
-            profit[i] = items.get(i).getValue();
-            weight[i] = items.get(i).getWeight();
-            ratio[i] = profit[i] / weight[i];
+            Profit[i] = items.get(i).getValue();
+            Weight[i] = items.get(i).getWeight();
+            Ratio[i] = Profit[i] / Weight[i];
         }
 
         for (i = 0; i < itemsNumber; i++) {
             for (int j = i + 1; j < itemsNumber; j++) {
-                if (ratio[i] < ratio[j]) {
-                    temp = ratio[j];
-                    ratio[j] = ratio[i];
-                    ratio[i] = temp;
+                if (Ratio[i] < Ratio[j]) {
+                    temp = Ratio[j];
+                    Ratio[j] = Ratio[i];
+                    Ratio[i] = temp;
 
-                    temp = weight[j];
-                    weight[j] = weight[i];
-                    weight[i] = temp;
+                    temp = Weight[j];
+                    Weight[j] = Weight[i];
+                    Weight[i] = temp;
 
-                    temp = profit[j];
-                    profit[j] = profit[i];
-                    profit[i] = temp;
+                    temp = Profit[j];
+                    Profit[j] = Profit[i];
+                    Profit[i] = temp;
                 }
             }
         }
@@ -83,18 +54,18 @@ public class Greedy implements Algorithm {
             Percentage[i] = (float) 0.0;
 
         for (i = 0; i < itemsNumber; i++) {
-            if (weight[i] > Capacity)
+            if (Weight[i] > Capacity)
                 break;
             else {
                 Percentage[i] = (float) 1.0;
-                finalValue = finalValue + profit[i];
-                Capacity = Capacity - weight[i];
+                finalValue = finalValue + Profit[i];
+                Capacity = Capacity - Weight[i];
             }
         }
 
         if (i < itemsNumber)
-            Percentage[i] = Capacity / weight[i];
-        finalValue = finalValue + (Percentage[i] * profit[i]);
+            Percentage[i] = Capacity / Weight[i];
+        finalValue = finalValue + (Percentage[i] * Profit[i]);
         return finalValue;
     }
 }
